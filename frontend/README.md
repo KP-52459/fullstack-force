@@ -1,3 +1,18 @@
-# Welcome to your Lovable project
+# Księgarnia — FullStack-Force
 
-TODO: Document your project here
+Internetowa księgarnia zbudowana w React + TypeScript + Vite.
+
+## Uruchomienie
+
+```bash
+bun install
+bun dev
+```
+
+## Technologie
+
+- React 18 + TypeScript
+- Vite
+- Tailwind CSS + shadcn/ui
+- TanStack Query
+- React Router
