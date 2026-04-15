@@ -5,8 +5,8 @@ Internetowa księgarnia zbudowana w React + TypeScript + Vite.
 ## Uruchomienie
 
 ```bash
-bun install
-bun dev
+npm install
+npm run dev
 ```
 
 ## Technologie
