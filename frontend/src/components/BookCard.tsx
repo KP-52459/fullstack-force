@@ -11,14 +11,14 @@ interface BookCardProps {
 const BookCard = ({ book, onSelect }: BookCardProps) => {
   return (
     <div
-      className="group cursor-pointer rounded-lg border border-border bg-card overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1"
+      className="cursor-pointer rounded-lg border border-border bg-card overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
       onClick={() => onSelect(book)}
     >
       <div className="aspect-[2/3] overflow-hidden">
         <img
           src={book.coverUrl}
           alt={book.title}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover"
         />
       </div>
       <div className="p-4 space-y-2">
