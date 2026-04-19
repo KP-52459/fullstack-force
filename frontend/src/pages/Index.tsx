@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
-import { getAllBooks, getGenres, searchBooks } from "@/services/bookService";
+import { getAllBooks, getBookById, getGenres, searchBooks } from "@/services/bookService";
 import { Book } from "@/services/types";
 import BookCard from "@/components/BookCard";
 import BookDetail from "@/components/BookDetail";
 import CartSheet from "@/components/CartSheet";
+import Hero from "@/components/Hero";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, BookOpen } from "lucide-react";
@@ -15,6 +16,7 @@ const Index = () => {
 
   const allBooks = getAllBooks();
   const genres = getGenres();
+  const featuredBook = getBookById("3");
 
   const filteredBooks = useMemo(() => {
     let result = query ? searchBooks(query) : allBooks;
@@ -58,8 +60,9 @@ const Index = () => {
         </div>
       </header>
 
+      {featuredBook && <Hero book={featuredBook} onSelect={setSelectedBook} />}
+
       <main className="container py-8 space-y-8">
-        {/* Hero */}
         <section className="text-center space-y-4 py-8">
           <h1 className="font-display text-5xl font-bold text-foreground">
             Odkryj swoją następną lekturę
