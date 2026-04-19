@@ -1,46 +1,23 @@
-import { useState, useMemo } from "react";
-import { getAllBooks, getBookById, getGenres, searchBooks } from "@/services/bookService";
+import { useState } from "react";
+import { getAllBooks, getBookById } from "@/services/bookService";
 import { Book } from "@/services/types";
-import BookCard from "@/components/BookCard";
 import BookDetail from "@/components/BookDetail";
-import CartSheet from "@/components/CartSheet";
+import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search, BookOpen } from "lucide-react";
+import HomeSection from "@/components/HomeSection";
 
 const Index = () => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [query, setQuery] = useState("");
-  const [activeGenre, setActiveGenre] = useState<string | null>(null);
 
-  const allBooks = getAllBooks();
-  const genres = getGenres();
   const featuredBook = getBookById("3");
-
-  const filteredBooks = useMemo(() => {
-    let result = query ? searchBooks(query) : allBooks;
-    if (activeGenre) {
-      result = result.filter((b) => b.genre === activeGenre);
-    }
-    return result;
-  }, [query, activeGenre, allBooks]);
+  const allBooks = getAllBooks();
+  const newArrivals = [...allBooks].sort((a, b) => b.year - a.year).slice(0, 4);
+  const classics = [...allBooks].sort((a, b) => a.year - b.year).slice(0, 4);
 
   if (selectedBook) {
     return (
       <div className="min-h-screen bg-background">
-        <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container flex h-16 items-center justify-between">
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => setSelectedBook(null)}
-            >
-              <BookOpen className="h-6 w-6 text-primary" />
-              <span className="font-display text-xl font-bold text-foreground">Księgarnia</span>
-            </div>
-            <CartSheet />
-          </div>
-        </header>
+        <Navbar />
         <main className="container py-8">
           <BookDetail book={selectedBook} onBack={() => setSelectedBook(null)} />
         </main>
@@ -50,75 +27,21 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-6 w-6 text-primary" />
-            <span className="font-display text-xl font-bold text-foreground">Księgarnia</span>
-          </div>
-          <CartSheet />
-        </div>
-      </header>
-
+      <Navbar />
       {featuredBook && <Hero book={featuredBook} onSelect={setSelectedBook} />}
 
-      <main className="container py-8 space-y-8">
-        <section className="text-center space-y-4 py-8">
-          <h1 className="font-display text-5xl font-bold text-foreground">
-            Odkryj swoją następną lekturę
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Przeglądaj naszą kolekcję klasyków i współczesnych bestsellerów.
-          </p>
-        </section>
-
-        {/* Search & Filters */}
-        <div className="space-y-4">
-          <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Szukaj po tytule lub autorze..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            <Badge
-              variant={activeGenre === null ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => setActiveGenre(null)}
-            >
-              Wszystkie
-            </Badge>
-            {genres.map((genre) => (
-              <Badge
-                key={genre}
-                variant={activeGenre === genre ? "default" : "outline"}
-                className="cursor-pointer"
-                onClick={() => setActiveGenre(genre)}
-              >
-                {genre}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        {/* Book Grid */}
-        {filteredBooks.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-muted-foreground text-lg">
-              Nie znaleziono książek pasujących do wyszukiwania.
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {filteredBooks.map((book) => (
-              <BookCard key={book.id} book={book} onSelect={setSelectedBook} />
-            ))}
-          </div>
-        )}
-      </main>
+      <HomeSection
+        kicker="Nowości tego miesiąca"
+        title="Świeże premiery."
+        books={newArrivals}
+        onSelect={setSelectedBook}
+      />
+      <HomeSection
+        kicker="Polecane przez redakcję"
+        title="Książki, które wciąż rekomendujemy."
+        books={classics}
+        onSelect={setSelectedBook}
+      />
 
       <footer className="border-t border-border py-8 mt-16">
         <div className="container text-center text-sm text-muted-foreground">
