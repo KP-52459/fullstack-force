@@ -14,7 +14,7 @@ const CartSheet = () => {
       <SheetTrigger asChild>
         <Button variant="outline" className="relative gap-2">
           <ShoppingCart className="h-5 w-5" />
-          Koszyk
+          <span className="hidden sm:inline">Koszyk</span>
           {count > 0 && (
             <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
               {count}
