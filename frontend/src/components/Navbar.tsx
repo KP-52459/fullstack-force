@@ -13,7 +13,7 @@ const Navbar = () => {
           <span className="font-display text-xl font-bold text-foreground">Księgarnia</span>
         </Link>
 
-        <nav className="absolute left-1/2 -translate-x-1/2 flex items-center gap-6">
+        <nav className="hidden md:absolute md:left-1/2 md:-translate-x-1/2 md:flex items-center gap-6">
           <Link
             to="/katalog"
             className={`text-sm font-medium transition-colors hover:text-foreground ${
@@ -24,7 +24,19 @@ const Navbar = () => {
           </Link>
         </nav>
 
-        <CartSheet />
+        <div className="flex items-center gap-3">
+          <nav className="flex md:hidden items-center gap-4">
+            <Link
+              to="/katalog"
+              className={`text-sm font-medium transition-colors hover:text-foreground ${
+                pathname === "/katalog" ? "text-foreground" : "text-muted-foreground"
+              }`}
+            >
+              Katalog
+            </Link>
+          </nav>
+          <CartSheet />
+        </div>
       </div>
     </header>
   );
